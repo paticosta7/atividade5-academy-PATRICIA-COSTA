@@ -30,11 +30,12 @@ describe("Teste de Registro de Novo Usuário", () => {
     paginaRegistroUsuario.pegarMensagemErro().should("be.visible");
   });
 
-  // it("Não deve ser possível registrar um usuário sem informar um email válido", () => {
-  //   paginaRegistroUsuario.preencherNome("Bruce Wayne");
-  //   paginaRegistroUsuario.clicarBotaoEnviar();
-  //   paginaRegistroUsuario.pegarMensagemErro().should("be.visible");
-  // });
+  it("Não deve ser possível registrar um usuário sem informar um email válido", () => {
+    paginaRegistroUsuario.preencherNome("Bruce W");
+    paginaRegistroUsuario.preencherEmail("brucew.com");
+    paginaRegistroUsuario.clicarBotaoEnviar();
+    paginaRegistroUsuario.pegarMensagemErro().should("be.visible");
+  });
 
   describe("Teste de Registro de Novo Usuário com Dados em Uso", () => {
     it("Deve ocorrer um erro quando o e-mail já estiver em uso", () => {

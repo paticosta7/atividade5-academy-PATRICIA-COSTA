@@ -37,6 +37,26 @@ export class UsersPage {
       "Ops! Não existe nenhum usuário para ser exibido."
     );
   }
+  criaUsuario() {
+    cy.request({
+      method: "POST",
+      url: "https://rarocrud-80bf38b38f1f.herokuapp.com/api/v1/users",
+      body: {
+        name: "Mulher Gato",
+        email: "mulhergato@qa.com",
+      },
+    }).then((response) => {
+      expect(response.status).to.equal(201);
+      return response.body;
+    });
+  }
+  deletarUsuario(id) {
+    cy.request({
+      method: "DELETE",
+      url: "https://rarocrud-80bf38b38f1f.herokuapp.com/api/v1/users/" + id,
+    }).then((response) => {
+      expect(response.status).to.equal(204);
+      return response.body;
+    });
+  }
 }
-
-//<h3>Ops! Não existe nenhum usuário para ser exibido.</h3>

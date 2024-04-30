@@ -2,9 +2,25 @@ import { UsersPage } from "../support/pages/search";
 
 describe("Teste para pesquisar por usuário", () => {
   const usersPage = new UsersPage();
+  let user;
 
-  beforeEach(() => {
-    usersPage.visitar();
+  before(() => {
+    cy.request({
+      method: "POST",
+      url: "https://rarocrud-80bf38b38f1f.herokuapp.com/api/v1/users",
+      body: {
+        name: "Pinguim QA",
+        email: "pinguinn@qa.com",
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.equal(201);
+      user = response.body;
+      usersPage.visitar();
+    });
+  });
+  before(() => {
+    usersPage.deletarUsuario(user.id);
   });
 
   it("Deve ser possível localizar um usuário pelo nome", () => {
