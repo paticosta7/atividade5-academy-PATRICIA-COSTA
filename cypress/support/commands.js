@@ -40,6 +40,32 @@ Cypress.Commands.add("limparCadastroUsuario", () => {
   });
 });
 
+Cypress.Commands.add("cadastrarUsuario", () => {
+  let user;
+  cy.request(
+    "POST",
+    "https://rarocrud-80bf38b38f1f.herokuapp.com/api/v1/users",
+    {
+      name: "Bruce Wayne O batman",
+      email: "brucewayneo@batman4gmail.com",
+    }
+  ).then((response) => {
+    expect(response.status).to.eq(201);
+    user = response.body;
+    return user;
+  });
+});
+
+Cypress.Commands.add("deletarUsuario", (id) => {
+  cy.request(
+    "DELETE",
+    `https://rarocrud-80bf38b38f1f.herokuapp.com/api/v1/users/${id}`
+  ).then((response) => {
+    expect(response.status).to.eq(204);
+    return response.body;
+  });
+});
+
 Cypress.Commands.add("verificarMensagemAlerta", (mensagem) => {
   cy.on("window:alert", (message) => {
     expect(message).to.equal(mensagem);

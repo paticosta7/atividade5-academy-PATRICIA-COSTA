@@ -5,34 +5,25 @@ describe("Teste para pesquisar por usuário", () => {
   let user;
 
   before(() => {
-    cy.request({
-      method: "POST",
-      url: "https://rarocrud-80bf38b38f1f.herokuapp.com/api/v1/users",
-      body: {
-        name: "Pinguim QA",
-        email: "pinguinn@qa.com",
-      },
-      failOnStatusCode: false,
-    }).then((response) => {
-      expect(response.status).to.equal(201);
-      user = response.body;
+    cy.cadastrarUsuario().then((userData) => {
+      user = userData;
       usersPage.visitar();
     });
   });
-  before(() => {
-    usersPage.deletarUsuario(user.id);
+
+  after(() => {
+    cy.deletarUsuario(user?.id);
   });
 
   it("Deve ser possível localizar um usuário pelo nome", () => {
-    const nomeUsuario = "Bruce Wayne";
+    const nomeUsuario = user.name;
 
     usersPage.inputDeBusca(nomeUsuario);
     usersPage.nomeDeUsuárioEncontrado(nomeUsuario);
   });
 
   it("Deve ser possível localizar um usuário pelo email", () => {
-    const emailUsuario = "brucewayne@teste.com";
-
+    const emailUsuario = user.email;
     usersPage.inputDeBusca(emailUsuario);
     usersPage.emailDeUsuárioEncontrado(emailUsuario);
   });
